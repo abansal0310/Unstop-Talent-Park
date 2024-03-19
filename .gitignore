@@ -1,0 +1,18 @@
+# Ignore compiled Python files
+*.pyc
+__pycache__
+
+# Ignore environment-related files
+.env
+venv/
+.env.*
+
+# Ignore system-generated files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE or editor-specific files
+.vscode/
+.idea/
+*.iml
+*.ipynb_checkpoints/
