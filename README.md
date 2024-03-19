@@ -9,7 +9,7 @@ This is a Python script for searching and analyzing job postings data.
 
 1. Clone the repository:
    ```bash
-   git clone <repository_url>
+   git clone <https://github.com/abansal0310/Unstop-Talent-Park>
    ```
 
 2. Install dependencies:
