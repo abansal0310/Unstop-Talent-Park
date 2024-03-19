@@ -1,11 +1,22 @@
-Title,Company,Location,Posted Date,Description,Requirements,Job Type,Experience Level,Salary Min (₹),Salary Max (₹),Views,Applications,Link
-Python Developer,ABC Corp,Mumbai,2023-01-05,We are seeking a Python developer to join our dynamic team.,Bachelor's degree in Computer Science or related field,Python Developer,Entry-level,50000,75000,500,50,https://www.example.com/job1
-Data Scientist,XYZ Inc,Bangalore,2023-02-15,We are looking for a Data Scientist with expertise in machine learning and statistical analysis.,Master's or Ph.D. in Computer Science, Data Science, or related field,Data Scientist,Mid-level,75000,100000,800,70,https://www.example.com/job2
-Software Engineer,LMN Tech,Hyderabad,2023-03-20,Join our innovative team as a Software Engineer and work on cutting-edge projects.,Bachelor's or Master's degree in Computer Science, Software Engineering, or related field,Software Engineer,Senior-level,100000,150000,1000,100,https://www.example.com/job3
-Data Analyst,PQR Solutions,Chennai,2023-04-10,Looking for a skilled Data Analyst with experience in SQL and data visualization tools.,Bachelor's degree in Computer Science, Mathematics, Statistics, Economics, or related field,Data Analyst,Entry-level,45000,60000,600,60,https://www.example.com/job4
-Full Stack Developer,JKL Technologies,Delhi,2023-05-25,Join our team as a Full Stack Developer and contribute to the development of web applications.,Bachelor's degree in Computer Science or related field,Full Stack Developer,Entry-level,60000,80000,700,70,https://www.example.com/job5
-Software Developer,OPQ Innovations,Pune,2023-06-12,We are hiring Software Developers to design, develop, and maintain software solutions.,Bachelor's degree in Computer Science, Software Engineering, or related field,Software Developer,Entry-level,55000,70000,550,55,https://www.example.com/job6
-Machine Learning Engineer,RST Labs,Bangalore,2023-07-20,Looking for a Machine Learning Engineer to build and deploy machine learning models.,Master's degree in Computer Science, Engineering, Mathematics, or related field,Machine Learning Engineer,Mid-level,80000,120000,900,80,https://www.example.com/job7
-Web Designer,UVW Designs,Chennai,2023-08-08,We are seeking a creative Web Designer to design engaging user interfaces for websites and applications.,Bachelor's degree in Web Design, Graphic Design, Computer Science, or related field,Web Designer,Entry-level,40000,55000,400,40,https://www.example.com/job8
-Network Administrator,XYZ Networking,Bangalore,2023-09-14,Join our team as a Network Administrator and ensure the smooth operation of our computer networks.,Bachelor's degree in Computer Science, Information Technology, or related field,Network Administrator,Entry-level,55000,70000,600,60,https://www.example.com/job9
-Database Administrator,ABC Solutions,Mumbai,2023-10-30,We are hiring a Database Administrator to manage and maintain our databases for optimal performance.,Bachelor's degree in Computer Science, Information Technology, or related field,Database Administrator,Mid-level,70000,90000,700,70,https://www.example.com/job10
+Job_ID,Title,Company,Location,Description,Requirements,Posted_Date,Views,Applications,Company_Rating,Salary,Remote,Contract,Full_Time,Category
+1,Data Scientist,ABC Tech Solutions,Bengaluru,"ABC Tech Solutions is looking for a talented Data Scientist to join our team. In this role, you will be responsible for analyzing complex datasets, developing machine learning models, and providing actionable insights to drive business decisions.","- Bachelor's degree in Computer Science, Data Science, or related field
+- Proven experience as a Data Scientist
+- Strong programming skills in Python and R
+- Experience with machine learning algorithms and techniques
+- Excellent analytical and problem-solving skills","2024-03-15",120,25,4.5,1200000,1,0,1,IT & Software
+2,Software Engineer,XYZ Innovations,Pune,"Join the dynamic team at XYZ Innovations as a Software Engineer! In this role, you will be responsible for designing, developing, and testing software solutions to meet customer requirements and improve user experience.","- Bachelor's degree in Computer Science or related field
+- Proficiency in Java, C++, or Python
+- Strong problem-solving skills
+- Experience with Agile methodologies is a plus","2024-03-16",90,15,4.2,1000000,0,1,1,IT & Software
+3,Marketing Manager,Acme Corporation,Mumbai,"Acme Corporation is seeking a talented Marketing Manager to lead our marketing initiatives and drive brand awareness. The ideal candidate will have a proven track record of developing and implementing successful marketing campaigns.","- Bachelor's degree in Marketing, Business Administration, or related field
+- Proven experience in marketing or related role
+- Strong leadership and communication skills
+- Creativity and strategic thinking","2024-03-17",80,10,4.0,900000,0,1,1,Marketing & Sales
+4,Financial Analyst,Global Finance Inc.,Delhi,"Global Finance Inc. is hiring a Financial Analyst to support our finance team in analyzing financial data, preparing reports, and providing insights to improve financial performance.","- Bachelor's degree in Finance, Accounting, or related field
+- Strong analytical skills and attention to detail
+- Proficiency in Microsoft Excel and financial modeling
+- Excellent communication and interpersonal skills","2024-03-18",70,8,4.3,950000,1,0,1,Finance & Accounting
+5,UX/UI Designer,Design Innovators,Hyderabad,"Join Design Innovators as a UX/UI Designer and unleash your creativity! We're looking for a talented designer to create intuitive and visually appealing user interfaces for our digital products.","- Bachelor's degree in Design, Computer Science, or related field
+- Proven experience as a UX/UI Designer
+- Proficiency in design tools such as Adobe XD, Sketch, or Figma
+- Strong portfolio showcasing design projects","2024-03-19",60,5,4.5,1100000,1,0,1,Design & Creative
