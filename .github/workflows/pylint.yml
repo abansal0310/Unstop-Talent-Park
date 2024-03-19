@@ -3,7 +3,7 @@ name: Pylint
 on:
   push:
     branches:
-      - main  # Change to your main branch name
+      - main 
 
 jobs:
   pylint:
@@ -27,4 +27,4 @@ jobs:
       
       - name: Run pylint
         run: |
-          pylint job_search.py  # Adjust filename if needed
+          pylint job_search.py
