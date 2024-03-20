@@ -1,0 +1,26 @@
+Curriculum Vitae
+Name: John Doe
+Email: john.doe@example.com
+Phone: +1 (123) 456-7890
+Address: 123 Main Street, Cityville, State, Country
+LinkedIn: linkedin.com/in/johndoe
+GitHub: github.com/johndoe
+Skills:
+  - Programming Languages: Python, Java, C++
+  - Web Development: HTML, CSS, JavaScript
+  - Data Analysis: SQL, Pandas, NumPy
+  - Frameworks: Django, Flask, React
+Experience:
+  - Software Engineer | ABC Tech Solutions | 2020-Present
+    Responsibilities:
+      - Developed and maintained web applications using Python and Django framework
+      - Implemented RESTful APIs for communication with backend services
+      - Collaborated with UX/UI designers to create responsive and user-friendly interfaces
+  - Data Analyst Intern | XYZ Analytics | Summer 2019
+    Responsibilities:
+      - Extracted and analyzed data from various sources to identify trends and insights
+      - Created visualizations and reports to present findings to stakeholders
+      - Assisted in the development of machine learning models for predictive analysis
+Education:
+  - Master of Science in Computer Science | University of ABC | 2018-2020
+  - Bachelor of Technology in Information Technology | State University | 2014-2018
