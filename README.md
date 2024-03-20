@@ -18,7 +18,7 @@ To get started with Unstop Talent Hub, simply sign up for an account on our plat
 
 ## Installation
 
-Unstop Talent Hub is a web-based platform accessible through any modern web browser. There is no installation required. Simply visit [unstoptalenthub.com]([https://www.unstoptalenthub.com](https://unstop.com/)) to access the platform.
+Unstop Talent Hub is a web-based platform accessible through any modern web browser. There is no installation required. Simply visit [[https://www.unstoptalenthub.com](https://unstop.com/)](https://unstop.com/)) to access the platform.
 
 ## Contributing
 
