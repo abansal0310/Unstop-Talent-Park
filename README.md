@@ -1,6 +1,8 @@
 # Unstop Talent Hub
 
+
 ![image](https://github.com/abansal0310/Unstop-Talent-Park/assets/143927056/4de91e5c-1bc1-4aad-a643-2c676da2acb7)
+
 
 
 Unstop Talent Hub is a revolutionary platform that redefines talent engagement and hiring through advanced technology integration. Our mission is to empower individuals to unlock their full potential and connect them with opportunities that align with their skills, interests, and aspirations.
