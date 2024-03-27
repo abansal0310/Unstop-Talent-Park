@@ -1,7 +1,8 @@
 # Unstop Talent Hub
 
 
-![image](https://github.com/abansal0310/Unstop-Talent-Park/assets/143927056/4de91e5c-1bc1-4aad-a643-2c676da2acb7)
+![Unstop](https://github.com/abansal0310/Unstop-Talent-Park/assets/143927056/bad80995-9d0f-41fb-95a4-bbefabcc1496)
+
 
 
 
