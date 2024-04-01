@@ -37,8 +37,8 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Acknowledgements
 
-We would like to express our gratitude to the open-source community for their invaluable contributions and support. Special thanks to [OpenAI](https://openai.com) for their cutting-edge language models that have inspired our project.
-
+We would like to express our gratitude to the open-source community for their invaluable contributions and support.
 ---
 
 Thank you for choosing Unstop Talent Hub! Let's unleash the power of talent together.
+
