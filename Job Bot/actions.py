@@ -1,6 +1,3 @@
-Certainly! Below is the merged code including the additional functionalities along with the previously provided code:
-
-```python
 from rasa_sdk import Tracker, Action
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, AllSlotsReset
