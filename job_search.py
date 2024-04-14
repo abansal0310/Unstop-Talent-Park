@@ -2,7 +2,8 @@ import pandas as pd
 from datetime import datetime
 from collections import Counter
 import re
-import click  # Import click for CLI functionality
+import click
+import sys
 
 # Function to get current date string
 def get_current_date_string():
@@ -14,24 +15,43 @@ def get_current_date_string():
 # Function to load job postings data from a CSV file
 def load_job_postings(data_file):
     """Loads job postings data from a CSV file into a pandas DataFrame."""
-    df = pd.read_csv(data_file)
-    return df
+    try:
+        df = pd.read_csv(data_file)
+        return df
+    except FileNotFoundError:
+        print(f"Error: File '{data_file}' not found.")
+        return None
+    except Exception as e:
+        print(f"Error: Unable to load data from '{data_file}': {str(e)}")
+        return None
 
 # Function to search jobs with CLI functionality
 @click.command()
 @click.option('--search', prompt='Enter search terms', help='Search terms for job title or description')
-@click.option('--location', prompt='Enter location (optional)', help='Location for job search')
-@click.option('--posted_after', prompt='Enter posted after date (optional)', help='Filter jobs posted after specific date')
-def search_jobs_cli(search, location=None, posted_after=None):
+@click.option('--location', prompt='Enter location (optional)', default=None, help='Location for job search')
+@click.option('--posted_after', prompt='Enter posted after date (optional)', default=None, help='Filter jobs posted after specific date')
+@click.option('--sort_by', prompt='Sort results by (relevance, date, rating)', default='relevance', help='Sort criteria for search results')
+def search_jobs_cli(search, location=None, posted_after=None, sort_by='relevance'):
     """Searches job postings based on keywords, location, and posting date."""
     df = load_job_postings('job_postings.csv')  # Load job postings data
+    if df is None:
+        print("Error: Unable to load job postings data.")
+        sys.exit(1)
+
+    filtered_df = search_jobs(df, search, location, posted_after)
+    sorted_df = sort_results(filtered_df, sort_by)
+    paginate_results(sorted_df)
+
+# Function to search jobs
+def search_jobs(df, search_terms, location=None, posted_after=None):
+    """Searches job postings based on keywords, location, and posting date."""
     filtered_df = df.copy()
 
     # Filter by keywords in job title, description, and requirements
-    if search:
-        filtered_df = filtered_df[filtered_df['Title'].str.contains(search, case=False) |
-                                  filtered_df['Description'].str.contains(search, case=False) |
-                                  filtered_df['Requirements'].str.contains(search, case=False)]
+    if search_terms:
+        filtered_df = filtered_df[filtered_df['Title'].str.contains(search_terms, case=False) |
+                                  filtered_df['Description'].str.contains(search_terms, case=False) |
+                                  filtered_df['Requirements'].str.contains(search_terms, case=False)]
 
     # Filter by location (if provided)
     if location:
@@ -39,12 +59,13 @@ def search_jobs_cli(search, location=None, posted_after=None):
 
     # Filter by posted date (if provided)
     if posted_after:
-        filtered_df = filtered_df[pd.to_datetime(filtered_df['Posted Date']) >= pd.to_datetime(posted_after)]
+        try:
+            filtered_df = filtered_df[pd.to_datetime(filtered_df['Posted Date']) >= pd.to_datetime(posted_after)]
+        except ValueError:
+            print(f"Error: Invalid date format for '{posted_after}'. Expected format is YYYY-MM-DD.")
+            sys.exit(1)
 
-    if not filtered_df.empty:
-        print(filtered_df.head())
-    else:
-        print("No matching job postings found.")
+    return filtered_df
 
 # Function to highlight keywords
 def highlight_keywords(text, keywords):
@@ -57,14 +78,22 @@ def highlight_keywords(text, keywords):
 def calculate_trending_score(df, window=7):
     """Calculates a trending score for each job based on recent views/applications."""
     # Assuming columns exist for 'Views' (in the last 'window' days) and 'Applications'
-    df['Trending Score'] = df['Views'].rolling(window=window).mean() * 0.7 + df['Applications'].rolling(window=window).mean() * 0.3
+    try:
+        df['Trending Score'] = df['Views'].rolling(window=window).mean() * 0.7 + df['Applications'].rolling(window=window).mean() * 0.3
+    except KeyError as e:
+        print(f"Error: Missing required column '{e.args[0]}' for calculating trending score.")
     return df
 
 # Function to calculate job score
 def calculate_job_score(df, review_data=None):
     """Calculates a job score based on factors like company rating and (optional) reviews."""
     # Assuming a column 'Company Rating' exists
-    df['Job Score'] = df['Company Rating']
+    try:
+        df['Job Score'] = df['Company Rating']
+    except KeyError:
+        print("Error: Missing 'Company Rating' column for calculating job score.")
+        return df
+
     if review_data is not None:
         # Integrate logic to merge review data with job postings (e.g., by company ID)
         # and calculate a score based on review sentiment analysis (not implemented here)
@@ -111,23 +140,46 @@ def summarize_job_features(job_description):
 
 # Function to display jobs
 def display_jobs(df, search_terms, num_to_print=5):
-    """Prints information about the top job postings, highlighting matched"""
+    """Prints information about the top job postings, highlighting matched keywords and trending scores."""
+    if len(df) < num_to_print:
+        num_to_print = len(df)
+    if num_to_print == 0:
+        print("No matching job postings found")
+    else:
+        for i in range(num_to_print):
+            job = df.iloc[i]
+            title = highlight_keywords(job['Title'], search_terms)
+            company = job['Company']
+            location = job['Location']
+            link = job['Link']  # Assuming a 'Link' column exists for job listing URLs
+            requirements = highlight_keywords(job['Requirements'], search_terms)
+            trending_score = job['Trending Score'] if 'Trending Score' in df.columns else 0
+            job_score = job['Job Score'] if 'Job Score' in df.columns else 0
+            print(f"Job #{i+1}:\n{title} at {company} ({location})\n")
+            if job_score:
+                print(f"Job Score: {job_score:.1f} (based on company rating)")  # Display score with one decimal
+            if trending_score > 0:
+                print(f"Trending Score: {trending_score:.1f} (based on recent views/applications)\n")  # Display score with one decimal
+            print(f"Requirements: {requirements}\n")
+            print(f"More details: {link}\n")
 
-    # Placeholder function, actual implementation depends on specific requirements
-    pass
+Sure, here's the continuation of the code from the `paginate_results` function:
 
+```python
 # Function to paginate search results
-def paginate_results(results_df, page_size=5):
+def paginate_results(results_df, search_terms, page_size=5):
     """Paginates search results to display in manageable chunks."""
-    num_pages = len(results_df) // page_size + 1
+    num_pages = len(results_df) // page_size + (len(results_df) % page_size > 0)
     for page_num in range(num_pages):
         start_idx = page_num * page_size
-        end_idx = (page_num + 1) * page_size
+        end_idx = start_idx + page_size
         page_df = results_df.iloc[start_idx:end_idx]
-        print(page_df)
-        user_input = input("Press Enter to view next page (or 'q' to quit): ")
-        if user_input.lower() == 'q':
-            break
+        print(f"Page {page_num + 1} of {num_pages}:")
+        display_jobs(page_df, search_terms)
+        if page_num < num_pages - 1:
+            user_input = input("Press Enter to view next page (or 'q' to quit): ")
+            if user_input.lower() == 'q':
+                break
 
 # Function to sort search results
 def sort_results(results_df, sort_by='relevance'):
@@ -180,4 +232,3 @@ def visualize_results():
 if __name__ == "__main__":
     # Run the CLI search function if the script is executed directly
     search_jobs_cli()
-
