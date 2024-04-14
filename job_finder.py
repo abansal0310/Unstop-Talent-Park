@@ -19,6 +19,36 @@ def load_job_listings(data_file):
         print(f"Error: Unable to load data from '{data_file}': {str(e)}")
         return None
 
+def calculate_relevance_score(row, search_terms):
+    """Calculates a relevance score for a job listing based on search term matches."""
+    title_matches = sum(row['Title'].str.contains(term, case=False) for term in search_terms)
+    desc_matches = sum(row['Description'].str.contains(term, case=False) for term in search_terms)
+    req_matches = sum(row['Requirements'].str.contains(term, case=False) for term in search_terms)
+    relevance_score = title_matches * 2 + desc_matches + req_matches  # Assign higher weight to title matches
+    return relevance_score
+
+def calculate_trending_score(df, window=7):
+    """Calculates a trending score for each job based on recent views/applications."""
+    # Assuming columns exist for 'Views' (in the last 'window' days) and 'Applications'
+    df['Trending Score'] = df['Views'].rolling(window=window).mean() * 0.7 + df['Applications'].rolling(window=window).mean() * 0.3
+    return df
+
+def calculate_job_score(df, review_data=None):
+    """Calculates a job score based on factors like company rating and (optional) review data."""
+    if review_data is not None:
+        # Merge the review data with the job listings DataFrame
+        merged_df = pd.merge(df, review_data[['Company ID', 'Review Score']], how='left', left_on='Company ID', right_on='Company ID')
+
+        # Calculate the Job Score as a weighted average of Company Rating and Review Score
+        merged_df['Job Score'] = (merged_df['Company Rating'] * 0.6) + (merged_df['Review Score'] * 0.4)
+
+        # Drop the Review Score column and return the updated DataFrame
+        return merged_df.drop('Review Score', axis=1)
+    else:
+        # If no review data is provided, use only the Company Rating
+        df['Job Score'] = df['Company Rating']
+        return df
+
 def search_jobs(df, search_terms, location=None, posted_after=None, job_type=None, experience_level=None, salary_range=None, sort_by=None):
     """Searches job listings based on various criteria."""
     filtered_df = df.copy()
@@ -26,8 +56,8 @@ def search_jobs(df, search_terms, location=None, posted_after=None, job_type=Non
     # Filter by keywords in job title, description, and requirements
     if search_terms:
         filtered_df = filtered_df[filtered_df['Title'].str.contains(search_terms, case=False) |
-                                filtered_df['Description'].str.contains(search_terms, case=False) |
-                                filtered_df['Requirements'].str.contains(search_terms, case=False)]
+                                  filtered_df['Description'].str.contains(search_terms, case=False) |
+                                  filtered_df['Requirements'].str.contains(search_terms, case=False)]
 
     # Filter by location (if provided)
     if location:
@@ -52,12 +82,12 @@ def search_jobs(df, search_terms, location=None, posted_after=None, job_type=Non
         max_salary = float(max_salary.strip().replace('₹', '').replace(',', ''))
         filtered_df = filtered_df[(filtered_df['Salary Min (₹)'] >= min_salary) & (filtered_df['Salary Max (₹)'] <= max_salary)]
 
-    # Sort the results (if provided)
+    # Sort the results
     if sort_by:
         if sort_by == 'relevance':
-            # Sort by relevance (based on keyword matches)
-            # You may need to implement a custom relevance scoring algorithm here
-            pass
+            # Calculate relevance scores and sort by them
+            filtered_df['Relevance Score'] = filtered_df.apply(lambda row: calculate_relevance_score(row, search_terms), axis=1)
+            filtered_df = filtered_df.sort_values(by='Relevance Score', ascending=False).drop('Relevance Score', axis=1)
         elif sort_by == 'job_score':
             filtered_df = filtered_df.sort_values(by='Job Score', ascending=False)
         elif sort_by == 'trending_score':
@@ -70,22 +100,6 @@ def highlight_keywords(text, keywords):
     for keyword in keywords:
         text = text.replace(keyword, f"**{keyword}**")  # Replace with bold tags (adjust as needed)
     return text
-
-def calculate_trending_score(df, window=7):
-    """Calculates a trending score for each job based on recent views/applications."""
-    # Assuming columns exist for 'Views' (in the last 'window' days) and 'Applications'
-    df['Trending Score'] = df['Views'].rolling(window=window).mean() * 0.7 + df['Applications'].rolling(window=window).mean() * 0.3
-    return df
-
-def calculate_job_score(df, review_data=None):
-    """Calculates a job score based on factors like company rating and (optional) reviews."""
-    # Assuming a column 'Company Rating' exists
-    df['Job Score'] = df['Company Rating']
-    if review_data is not None:
-        # Integrate logic to merge review data with job listings (e.g., by company ID)
-        # and calculate a score based on review sentiment analysis (not implemented here)
-        pass
-    return df
 
 def display_jobs(df, search_terms, num_to_print=5):
     """Prints information about the top job listings, highlighting matched keywords and trending scores."""
@@ -114,19 +128,25 @@ def display_jobs(df, search_terms, num_to_print=5):
 data_file = "job_listings.csv"  # Replace with your actual data file path
 job_df = load_job_listings(data_file)
 
+# Example review data (you'll need to replace this with your actual review data)
+review_data = pd.DataFrame({'Company ID': [1234, 5678, 9012], 'Review Score': [4.2, 3.8, 4.5]})
+
 # Example search query
-search_terms = "Python Developer"
+search_terms = ["Python Developer"]
 location = "Bangalore"
 posted_after = "2023-01-01"
 job_type = "Full-time"
 experience_level = "Mid-level"
 salary_range = "70000-100000"
-sort_by = "job_score"
+sort_by = "relevance"
 
 # Search for jobs based on the provided criteria
 filtered_jobs = search_jobs(job_df, search_terms=search_terms, location=location, posted_after=posted_after,
                             job_type=job_type, experience_level=experience_level, salary_range=salary_range,
                             sort_by=sort_by)
 
-# Display the filtered job listings
-display_jobs(filtered_jobs, search_terms, num_to_print=5)
+# Calculate job scores with review data
+filtered_jobs = calculate_job_score(filtered_jobs, review_data)
+
+# Calculate trending scores
+filtered_jobs = calculate_trending_score(filtered_jobs)
