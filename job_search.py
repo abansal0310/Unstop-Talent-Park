@@ -163,9 +163,6 @@ def display_jobs(df, search_terms, num_to_print=5):
             print(f"Requirements: {requirements}\n")
             print(f"More details: {link}\n")
 
-Sure, here's the continuation of the code from the `paginate_results` function:
-
-```python
 # Function to paginate search results
 def paginate_results(results_df, search_terms, page_size=5):
     """Paginates search results to display in manageable chunks."""
