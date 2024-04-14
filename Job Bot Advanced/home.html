@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application Bot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            /* Set a clean, modern font */
+            margin: 2rem;
+            /* Add some margin for better spacing */
+        }
+
+        h1 {
+            text-align: center;
+            /* Center the title */
+            color: #333;
+            /* Set a dark gray for the title */
+        }
+
+        form {
+            display: flex;
+            /* Arrange form elements horizontally */
+            flex-wrap: wrap;
+            /* Allow elements to wrap to next line if needed */
+            margin: 1rem auto;
+            /* Center the form horizontally */
+            width: 50%;
+            /* Set a maximum width for the form */
+            padding: 1rem;
+            /* Add some padding for visual separation */
+            border: 1px solid #ddd;
+            /* Create a subtle border */
+            border-radius: 5px;
+            /* Add rounded corners */
+        }
+
+        label {
+            display: block;
+            /* Display labels on their own lines */
+            margin-bottom: 0.5rem;
+            /* Add some space between labels and inputs */
+            font-weight: bold;
+            /* Make labels stand out */
+            color: #333;
+            /* Use the same dark gray for labels */
+        }
+
+        input[type="text"],
+        input[type="submit"] {
+            width: 100%;
+            /* Make inputs and submit button fill the full width */
+            padding: 0.5rem;
+            /* Add some padding for clarity */
+            border: 1px solid #ddd;
+            /* Maintain the same border style */
+            border-radius: 3px;
+            /* Add slightly less rounded corners for inputs */
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            /* Set a blue background for the button */
+            color: #fff;
+            /* Use white text for better contrast */
+            cursor: pointer;
+            /* Indicate that it's a clickable button */
+            transition: background-color 0.2s ease-in-out;
+            /* Add a smooth hover effect */
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0069d9;
+            /* Change button color slightly on hover */
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Job Application Bot</h1>
+    <form method="post">
+        <label for="job_link">Job Link:</label>
+        <input type="text" id="job_link" name="job_link" required>
+        <br>
+
+        <label for="resume_path">Resume Path:</label>
+        <input type="text" id="resume_path" name="resume_path" required>
+        <br>
+
+        <label for="cover_letter_path">Cover Letter Path:</label>
+        <input type="text" id="cover_letter_path" name="cover_letter_path" required>
+        <br>
+
+        <label for="profile_document_path">Profile Document Path:</label>
+        <input type="text" id="profile_document_path" name="profile_document_path">
+        <br>
+
+        <label for="interview_details">Interview Details:</label>
+        <input type="text" id="interview_details" name="interview_details">
+        <br>
+
+        <label for="job_description">Job Description:</label>
+        <input type="text" id="job_description" name="job_description">
+        <br>
+
+        <input type="submit" value="Submit">
+    </form>
+</body>
+
+</html>
