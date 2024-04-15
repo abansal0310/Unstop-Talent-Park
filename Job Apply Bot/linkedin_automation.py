@@ -22,6 +22,25 @@ def login_linkedin(driver, username, password):
     except Exception as e:
         logging.error(f"An error occurred while logging in to LinkedIn: {e}")
 
+from openai_integration import generate_application_form_data
+
+def fill_application_form(driver, application_form_data):
+    # Set up the webdriver (replace "chromedriver" with the path to your webdriver if necessary)
+    driver = webdriver.Chrome("chromedriver")
+
+    # Navigate to the application form
+    driver.get("https://example.com/application-form")
+
+    # Fill out the form
+    driver.find_element_by_name("first_name").send_keys(application_form_data["first_name"])
+    driver.find_element_by_name("last_name").send_keys(application_form_data["last_name"])
+    driver.find_element_by_name("email").send_keys(application_form_data["email"])
+    driver.find_element_by_name("phone").send_keys(application_form_data["phone"])
+    driver.find_element_by_name("preferred_location").send_keys(application_form_data["preferred_location"])
+
+    # Submit the form
+    driver.find_element_by_name("submit").click()
+
 def apply_on_linkedin(driver, job_link):
     try:
         driver.get(job_link)
@@ -31,9 +50,11 @@ def apply_on_linkedin(driver, job_link):
         easy_apply_button.click()
         time.sleep(2)  # Wait for Easy Apply modal to load
 
-        # Fill out application form here based on your parameters
-        # application_form_data = generate_application_form_data()  # Import from openai_integration module
-        # fill_application_form(driver, application_form_data)  # Implement fill_application_form function
+        # Generate application form data
+        application_form_data = generate_application_form_data()
+
+        # Fill out application form
+        fill_application_form(driver, application_form_data)
 
         submit_button = driver.find_element_by_xpath('//button[@data-control-name="submit_unify"]')
         submit_button.click()
@@ -45,8 +66,6 @@ def apply_on_linkedin(driver, job_link):
         logging.error("Timed out waiting for the job application page or Easy Apply modal to load.")
     except Exception as e:
         logging.error(f"An error occurred while applying for the job: {e}")
-
-import logging
 
 def attach_files(driver, resume_path, cover_letter_path):
     try:
