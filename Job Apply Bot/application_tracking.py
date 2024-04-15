@@ -2,6 +2,8 @@ from email.mime.text import MIMEText
 import logging
 import smtplib
 import openai
+from bs4 import BeautifulSoup
+import requests
 
 
 # Set up logging
@@ -9,12 +11,29 @@ logging.basicConfig(filename='application_tracking.log', level=logging.INFO, for
 
 def track_application_status(job_id, company_id):
     try:
-        # Implement logic to retrieve application status from job portals or company career sites
-        # This may involve making API calls or scraping data from websites
-        # For this example, we'll assume a successful status retrieval
-        status = "Under Review"
-        logging.info(f"Successfully retrieved application status for job ID {job_id} at company ID {company_id}")
-        return status
+        # Make a request to the company's career site
+        url = f"https://www.{company_id}.com/careers/{job_id}"
+        response = requests.get(url)
+
+        # Check if the request was successful
+        if response.status_code == 200:
+            # Parse the HTML content
+            soup = BeautifulSoup(response.content, 'html.parser')
+
+            # Find the element containing the application status
+            status_element = soup.find("div", {"class": "application-status"})
+
+            # Extract the status text
+            if status_element:
+                status = status_element.get_text().strip()
+                logging.info(f"Successfully retrieved application status for job ID {job_id} at company ID {company_id}")
+                return status
+            else:
+                logging.error("Could not find application status element")
+                return None
+        else:
+            logging.error(f"Request to {url} failed with status code {response.status_code}")
+            return None
     except Exception as e:
         logging.error(f"An error occurred while retrieving application status: {e}")
         return None
