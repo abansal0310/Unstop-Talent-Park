@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 import json
 from selenium import webdriver
-import openai
 import logging
 
 import JobApplicationBot
@@ -39,4 +38,4 @@ def home():
     return render_template('home.html')
 
 if __name__ == '__main__':
-    app.run(debug=FALSE)
+    app.run(debug='FALSE')
