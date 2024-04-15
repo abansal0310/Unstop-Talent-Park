@@ -1,112 +1,123 @@
-from rasa_sdk import Tracker, Action
+from typing import Dict, Text, Any, List
+import random
+import datetime
+from rasa_sdk import Tracker, Action, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, AllSlotsReset
-from rasa_nlu.model import Interpreter  # Import for NLP
-from typing import Dict, Text, Any, List
-import datetime
-import random
+from rasa_nlu.model import Interpreter
+from resources import SAMPLE_JOBS, RECOMMENDED_JOBS, INTERVIEW_RESOURCES, COMPANY_INFO, FAQ, SKILL_RESOURCES
+
+# NLP model for intent classification
+nlp = Interpreter.load("Unstop-Talent-Park\Job Conversational Bot\nlu.md")  # Path to your trained Rasa model
 
 # (Optional) Integrate with a job search API (replace with your implementation)
 def search_jobs(skills, location):
-    # Simulate job search using sample data
-    jobs = [
-        {"title": "Software Engineer", "company": "Tech Company A"},
-        {"title": "Data Analyst", "company": "Data Inc."},
-        {"title": "Marketing Manager", "company": "Marketing Solutions"},
-    ]
-    return jobs[:3]  # Return a maximum of 3 jobs
-
-# NLP model for intent classification (replace with your trained model)
-nlp = Interpreter.load("your_nlu_model_path")  # Path to your trained Rasa model
+    try:
+        # Simulate job search using sample data
+        jobs = SAMPLE_JOBS
+        if skills:
+            jobs = [job for job in jobs if any(skill.lower() in job["title"].lower() for skill in skills)]
+        if location:
+            jobs = [job for job in jobs if location.lower() in job["company"].lower()]
+        return jobs[:3]  # Return a maximum of 3 jobs
+    except Exception as e:
+        print(f"Error searching jobs: {e}")
+        return []
 
 # Function to recommend jobs based on user's skills and preferences
 def recommend_jobs(user_skills):
-    # Replace this with your recommendation logic
-    recommended_jobs = [
-        {"title": "Data Scientist", "company": "Data Co."},
-        {"title": "Frontend Developer", "company": "Tech Solutions"},
-        {"title": "UX Designer", "company": "Design Innovations"}
-    ]
-    return recommended_jobs
+    try:
+        recommended_jobs = RECOMMENDED_JOBS
+        if user_skills:
+            recommended_jobs = [job for job in recommended_jobs if any(skill.lower() in job["title"].lower() for skill in user_skills)]
+        return recommended_jobs
+    except Exception as e:
+        print(f"Error recommending jobs: {e}")
+        return []
 
 # Function to submit resume
 def submit_resume(user_details):
-    # Replace this with your resume submission logic
-    # For demonstration, print the received details
-    print("Resume Submitted:")
-    print(user_details)
+    try:
+        # Replace this with your resume submission logic
+        # For demonstration, print the received details
+        print("Resume Submitted:")
+        print(user_details)
+    except Exception as e:
+        print(f"Error submitting resume: {e}")
 
 # Function to provide interview preparation resources
 def interview_preparation_resources():
-    # Replace this with your interview preparation resources
-    # For demonstration, provide sample resources
-    resources = [
-        "Mock interview sessions",
-        "Interview question banks",
-        "Resume and cover letter tips"
-    ]
-    return resources
+    try:
+        return INTERVIEW_RESOURCES
+    except Exception as e:
+        print(f"Error fetching interview resources: {e}")
+        return []
 
 # Function to provide information about a company
 def company_information(company_name):
-    # Replace this with your company information retrieval logic
-    # For demonstration, return sample company information
-    company_info = {
-        "name": company_name,
-        "description": "A leading tech company specializing in software development.",
-        "jobs": ["Software Engineer", "Data Analyst", "Product Manager"]
-    }
-    return company_info
+    try:
+        return COMPANY_INFO.get(company_name, None)
+    except Exception as e:
+        print(f"Error fetching company information: {e}")
+        return None
 
 # Function to track application status
 def track_application_status(application_id):
-    # Replace this with your application status tracking logic
-    # For demonstration, return a random application status
-    statuses = ["Submitted", "Under review", "Interview scheduled", "Offer extended", "Rejected"]
-    return random.choice(statuses)
+    try:
+        # Replace this with your application status tracking logic
+        # For demonstration, return a random application status
+        statuses = ["Submitted", "Under review", "Interview scheduled", "Offer extended", "Rejected"]
+        return random.choice(statuses)
+    except Exception as e:
+        print(f"Error tracking application status: {e}")
+        return "Error"
 
 # Function to recommend skill development resources
 def skill_development_resources(skill):
-    # Replace this with your skill development resources
-    # For demonstration, provide sample resources
-    resources = [
-        "Online courses on " + skill,
-        "Tutorials and guides",
-        "Certifications in " + skill
-    ]
-    return resources
-
-# Function to subscribe to job alerts
-def subscribe_to_job_alerts(user_email, job_preferences):
-    # Replace this with your job alert subscription logic
-    # For demonstration, print the received details
-    print("Job Alerts Subscription:")
-    print("Email:", user_email)
-    print("Preferences:", job_preferences)
-
-# Function to collect feedback
-def collect_feedback(feedback):
-    # Replace this with your feedback collection logic
-    # For demonstration, print the received feedback
-    print("Feedback Received:", feedback)
-
-# Function to schedule interviews or appointments
-def schedule_interview(user_email, datetime):
-    # Replace this with your interview scheduling logic
-    # For demonstration, print the scheduled interview details
-    print("Interview Scheduled:")
-    print("Email:", user_email)
-    print("Date and Time:", datetime)
+    try:
+        return SKILL_RESOURCES.get(skill, [])
+    except Exception as e:
+        print(f"Error fetching skill resources: {e}")
+        return []
 
 # Function to answer frequently asked questions
 def answer_faq(question):
-    # Replace this with your FAQ logic
-    # For demonstration, provide sample answers
-    faq = {
-        "How do I apply for a job?": "You can apply for a job through our website's career page.",
-        "What benefits do you offer?": "We offer competitive salary, health insurance, and flexible work hours."
-    }
-    return faq.get(question, "Sorry, I don't have an answer to that question.")
+    try:
+        return FAQ.get(question, "Sorry, I don't have an answer to that question.")
+    except Exception as e:
+        print(f"Error answering FAQ: {e}")
+        return "Sorry, I'm unable to answer that question at the moment."
+
+# Function to subscribe to job alerts
+def subscribe_to_job_alerts(user_email, job_preferences):
+    try:
+        # Replace this with your job alert subscription logic
+        # For demonstration, print the received details
+        print("Job Alerts Subscription:")
+        print("Email:", user_email)
+        print("Preferences:", job_preferences)
+    except Exception as e:
+        print(f"Error subscribing to job alerts: {e}")
+
+# Function to collect feedback
+def collect_feedback(feedback):
+    try:
+        # Replace this with your feedback collection logic
+        # For demonstration, print the received feedback
+        print("Feedback Received:", feedback)
+    except Exception as e:
+        print(f"Error collecting feedback: {e}")
+
+# Function to schedule interviews or appointments
+def schedule_interview(user_email, datetime):
+    try:
+        # Replace this with your interview scheduling logic
+        # For demonstration, print the scheduled interview details
+        print("Interview Scheduled:")
+        print("Email:", user_email)
+        print("Date and Time:", datetime)
+    except Exception as e:
+        print(f"Error scheduling interview: {e}")
 
 class ActionGreet(Action):
     """Greets the user and introduces the chatbot."""
@@ -115,7 +126,7 @@ class ActionGreet(Action):
         return "action_greet"
 
     def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict]:
         dispatcher.utter_message(template="utter_greet")
         return []
@@ -127,7 +138,7 @@ class ActionAskJobSearchIntent(Action):
         return "action_ask_job_search_intent"
 
     def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict]:
         dispatcher.utter_message(template="utter_ask_job_search_intent")
         return []
@@ -139,7 +150,7 @@ class ActionSearchJobsByUserInput(Action):
         return "action_search_jobs_by_user_input"
 
     def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict]:
         skills = tracker.get_slot("skills")
         location = tracker.get_slot("location")
@@ -147,8 +158,8 @@ class ActionSearchJobsByUserInput(Action):
 
         if jobs:
             message = (
-                    f"Found some job openings that might be a good fit for you:\n"
-                    f"{', '.join([job['title'] + ' at ' + job['company'] for job in jobs])}"
+                f"Found some job openings that might be a good fit for you:\n"
+                f"{', '.join([job['title'] + ' at ' + job['company'] for job in jobs])}"
             )
             dispatcher.utter_message(text=message)
         else:
@@ -163,7 +174,7 @@ class ActionProcessJobApplication(Action):
         return "action_process_job_application"
 
     def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict]:
         message = tracker.latest_message.get("text")
         # Use NLP to understand the user's intent and extract job title (if possible)
@@ -186,8 +197,8 @@ class ActionTrackApplications(Action):
         return "action_track_applications"
 
     def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
-   ) -> List[Dict]:
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+    ) -> List[Dict]:
         # (Replace with logic to access and display tracked applications)
         dispatcher.utter_message(template="utter_applications_not_implemented")
         return []
@@ -199,7 +210,7 @@ class ActionRecommendJobs(Action):
         return "action_recommend_jobs"
 
     def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict]:
         user_skills = tracker.get_slot("skills")
         recommended_jobs = recommend_jobs(user_skills)
@@ -221,7 +232,7 @@ class ActionSubmitResume(Action):
         return "action_submit_resume"
 
     def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict]:
         user_details = {
             "name": tracker.get_slot("name"),
@@ -239,7 +250,7 @@ class ActionProvideInterviewResources(Action):
         return "action_provide_interview_resources"
 
     def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict]:
         resources = interview_preparation_resources()
         dispatcher.utter_message(text="Here are some interview preparation resources:")
@@ -254,7 +265,7 @@ class ActionProvideCompanyInfo(Action):
         return "action_provide_company_info"
 
     def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict]:
         company_name = tracker.get_slot("company_name")
         company_info = company_information(company_name)
@@ -275,7 +286,7 @@ class ActionTrackApplicationStatus(Action):
         return "action_track_application_status"
 
     def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict]:
         application_id = tracker.get_slot("application_id")
         application_status = track_application_status(application_id)
@@ -289,7 +300,7 @@ class ActionRecommendSkillResources(Action):
         return "action_recommend_skill_resources"
 
     def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict]:
         skill = tracker.get_slot("skill")
         skill_resources = skill_development_resources(skill)
@@ -309,7 +320,7 @@ class ActionSubscribeToJobAlerts(Action):
         return "action_subscribe_to_job_alerts"
 
     def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict]:
         user_email = tracker.get_slot("email")
         job_preferences = tracker.get_slot("job_preferences")
@@ -324,7 +335,7 @@ class ActionCollectFeedback(Action):
         return "action_collect_feedback"
 
     def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict]:
         feedback = tracker.latest_message.get("text")
         collect_feedback(feedback)
@@ -338,7 +349,7 @@ class ActionScheduleInterview(Action):
         return "action_schedule_interview"
 
     def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict]:
         user_email = tracker.get_slot("email")
         interview_datetime = datetime.datetime.strptime(tracker.get_slot("interview_datetime"), "%Y-%m-%dT%H:%M:%S.%fZ")
@@ -353,10 +364,9 @@ class ActionAnswerFAQ(Action):
         return "action_answer_faq"
 
     def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict]:
         question = tracker.latest_message.get("text")
         answer = answer_faq(question)
         dispatcher.utter_message(text=answer)
         return []
-

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Search Chatbot</title>
+    <script src="https://cdn.jsdelivr.net/npm/@rasa/webchat@1.x/dist/webchat.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@rasa/webchat@1.x/dist/webchat.css">
+    <script>
+        window.onload = function () {
+            const chat = new WebchatUI({
+                socket: {
+                    url: 'http://localhost:5005',
+                    transport: 'websocket',
+                    jsonReaderPrefix: 'rasa.server._legacyRasa',
+                },
+                channel: 'http://localhost:5005',
+            });
+            chat.open();
+        }
+    </script>
+</head>
+
+<body>
+    <div id="webchat"></div>
+</body>
+
+</html>

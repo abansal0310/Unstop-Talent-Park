@@ -1,0 +1,104 @@
+version: "2.0"
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - ask_job_search_intent
+  - provide_skills
+  - provide_location
+  - apply_for_job
+  - confirm_application
+  - provide_feedback
+  - request_company_info
+  - track_application_status
+  - subscribe_job_alerts
+  - thank_you
+  - faq
+entities:
+  - skills: "{"skills":[]}"
+  - location: "{"location":[]}"
+  - job_title: "{"job_title":[]}"
+  - company_name: "{"company_name":[]}"
+  - application_id: "{"application_id":[]}"
+  - job_preferences: "{"job_preferences":[]}"
+slots:
+  skills:
+    type: unfeaturized
+    influence_conversation: true
+  location:
+    type: unfeaturized
+    influence_conversation: true
+  job_title:
+    type: unfeaturized
+    influence_conversation: true
+  company_name:
+    type: unfeaturized
+    influence_conversation: true
+  application_id:
+    type: unfeaturized
+    influence_conversation: true
+  job_preferences:
+    type: unfeaturized
+    influence_conversation: true
+actions:
+  - utter_greet
+  - utter_goodbye
+  - utter_affirm
+  - utter_deny
+  - utter_ask_job_search_intent
+  - utter_provide_skills
+  - utter_provide_location
+  - utter_apply_for_job
+  - utter_confirm_application
+  - utter_provide_feedback
+  - utter_request_company_info
+  - utter_track_application_status
+  - utter_subscribe_job_alerts
+  - utter_thank_you
+  - utter_faq
+  - action_search_jobs_by_user_input
+  - action_process_job_application
+  - action_track_applications
+  - action_recommend_jobs
+  - action_submit_resume
+  - action_provide_interview_resources
+  - action_provide_company_info
+  - action_track_application_status
+  - action_recommend_skill_resources
+  - action_subscribe_to_job_alerts
+  - action_collect_feedback
+  - action_schedule_interview
+  - action_answer_faq
+responses:
+  utter_greet:
+    - text: "Hello! How can I help you with your job search today?"
+  utter_goodbye:
+    - text: "Goodbye! Have a great day!"
+  utter_affirm:
+    - text: "Great! I'm here to help."
+  utter_deny:
+    - text: "I'm sorry to hear that. Let's see if I can assist you with something else."
+  utter_ask_job_search_intent:
+    - text: "Sure, I can help you with that. Let's start by searching for jobs. What skills do you have?"
+  utter_provide_skills:
+    - text: "Thanks for sharing your skills. Now, where are you looking to work?"
+  utter_provide_location:
+    - text: "Thanks for providing your location. Now, what job title are you interested in?"
+  utter_apply_for_job:
+    - text: "Great, I found a {job_title} position in {location}. Shall I submit your application?"
+  utter_confirm_application:
+    - text: "I have submitted your application for the {job_title} position in {location}. You can track the application status using the application ID."
+  utter_provide_feedback:
+    - text: "Thank you for your feedback. I'm glad I could help you with your job search."
+  utter_request_company_info:
+    - text: "Sure, I can provide information about {company_name}. It is a {description} company with {num_jobs} job openings in {job_categories}."
+  utterwith resume submission logic
+  utter_track_application_status:
+    - text: "The status of your application with ID {application_id} is {status}."
+  utter_subscribe_job_alerts:
+    - text: "I have subscribed you to job alerts for {job_preferences} positions. You will receive notifications for new job openings."
+  utter_thank_you:
+    - text: "You're welcome! Have a great day!"
+  utter_faq:
+    - text: "To apply for a job, you can search for jobs using your skills and location, then select a job title and confirm your application. If you need help with anything else, just let me know."
