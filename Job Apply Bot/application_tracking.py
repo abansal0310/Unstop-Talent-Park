@@ -63,7 +63,7 @@ def networking_assistance(api_key, user_profile, job_description):
         logging.error(f"An error occurred while generating networking assistance suggestions: {e}")
         return None
 
-def send_follow_up_email(sender_email, sender_password, recipient_email, job_id, company_id):
+def send_follow_up_email(sender_email, sender_password, recipient_email, job_id, company_id,job_description):
     try:
         # Configure SMTP server details
         smtp_server = 'smtp.gmail.com'
