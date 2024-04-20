@@ -11,6 +11,15 @@ def index():
 
 @app.route('/chat', methods=['POST'])
 def chat():
+    """
+    Process user input and return the agent's response.
+
+    Args:
+        user_input (str): The user's input message.
+
+    Returns:
+        str: The text of the agent's response.
+    """
     user_input = request.form['user_input']
     response = agent.handle_text(user_input)
     return response[0]['text']
